@@ -1,12 +1,12 @@
 import ProductIdentifier from '../product/product-id';
 
-class NegativeQuantityError extends Error { }
-class BadTypeError extends Error { }
-class UndefinedProduct extends Error { }
+class NegativeQuantityError extends Error {}
+class BadTypeError extends Error {}
+class UndefinedProduct extends Error {}
 
 export class Quantity {
   private constructor(readonly quantity: number) {
-    if ('number' !== typeof (quantity)) {
+    if ('number' !== typeof quantity) {
       throw new BadTypeError('You should pass a number value to create a quantity');
     }
 

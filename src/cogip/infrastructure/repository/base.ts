@@ -12,20 +12,20 @@ const accessProperty = (data: any, path: string, defaultValue: any = null): any 
     return defaultValue;
   }
 
-  return 1 === pathPart.length ?
-    data[pathPart[0]] :
-    accessProperty(data[pathPart[0]], pathPart.slice(1).join('.'), defaultValue);
-}
+  return 1 === pathPart.length
+    ? data[pathPart[0]]
+    : accessProperty(data[pathPart[0]], pathPart.slice(1).join('.'), defaultValue);
+};
 
 export const get = (data: string, key: string) => {
   const parsedData = JSON.parse(data);
 
   return accessProperty(parsedData, key);
-}
+};
 
 export const readFile = async () => {
   return new Promise<string>((resolve: any, reject: any) => {
-    lockfile.lock(lockLocation, {wait: 1000}, function (er) {
+    lockfile.lock(lockLocation, {wait: 1000}, function(er) {
       if (er) {
         throw er;
       }
@@ -36,20 +36,19 @@ export const readFile = async () => {
           resolve(file);
         }
 
-        lockfile.unlock(lockLocation, function (er) {
+        lockfile.unlock(lockLocation, function(er) {
           if (er) {
             throw er;
           }
-        })
+        });
       });
-    })
-
+    });
   });
-}
+};
 
 export const writeFile = async (file: string) => {
   return new Promise<void>((resolve: any, reject: any) => {
-    lockfile.lock(lockLocation, {wait: 100}, function (er) {
+    lockfile.lock(lockLocation, {wait: 100}, function(er) {
       if (er) {
         throw er;
       }
@@ -61,11 +60,11 @@ export const writeFile = async (file: string) => {
         }
       });
 
-      lockfile.unlock(lockLocation, function (er) {
+      lockfile.unlock(lockLocation, function(er) {
         if (er) {
           throw er;
         }
-      })
+      });
     });
   });
-}
+};

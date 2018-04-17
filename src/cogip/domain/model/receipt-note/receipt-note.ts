@@ -1,14 +1,14 @@
 import Line from '../line/line';
 import SupplierId from '../supplier/supplier-id';
 
-class BadTypeError extends Error { };
+class BadTypeError extends Error {}
 
 export interface ReceiptNoteEvent {
   type: string;
 }
 
 export class ReceiptId {
-  private constructor(readonly id: string) { }
+  private constructor(readonly id: string) {}
 
   public static create(id: string) {
     return new ReceiptId(id);
@@ -40,7 +40,7 @@ export default class ReceiptNote {
   }
 
   public static create(receiptId: ReceiptId, lines: Line[], supplier: SupplierId) {
-    const events = [{ type: 'RECEIPT_NOTE_CREATED', id: receiptId.id, lines }];
+    const events = [{type: 'RECEIPT_NOTE_CREATED', id: receiptId.id, lines}];
 
     return new ReceiptNote(receiptId, lines, supplier, events);
   }

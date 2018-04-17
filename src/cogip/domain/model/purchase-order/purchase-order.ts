@@ -1,7 +1,7 @@
 import Line from '../line/line';
 import SupplierId from '../supplier/supplier-id';
 
-class BadTypeError extends Error { };
+class BadTypeError extends Error {}
 
 export interface PurchaseOrderEvent {
   type: string;
@@ -47,7 +47,7 @@ export default class PurchaseOrder {
   }
 
   public place(): PurchaseOrder {
-    const events = [...this.events, { type: 'PURCHASE_PLACED', id: this.purchaseId.id }];
+    const events = [...this.events, {type: 'PURCHASE_PLACED', id: this.purchaseId.id}];
 
     return new PurchaseOrder(this.purchaseId, this.lines, this.supplier, true, events);
   }

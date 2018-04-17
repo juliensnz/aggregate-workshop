@@ -1,5 +1,5 @@
-import { readFile, get, writeFile } from './base';
-import Balance from "../../domain/model/balance/balance";
+import {readFile, get, writeFile} from './base';
+import Balance from '../../domain/model/balance/balance';
 
 export interface RawBalance {
   productId: string;
@@ -10,7 +10,7 @@ export const findById = async (id: string) => {
   const file = await readFile();
 
   return get(file, `balance.${id}`);
-}
+};
 
 export const saveOrUpdate = async (balance: Balance) => {
   const file = await readFile();
@@ -21,4 +21,4 @@ export const saveOrUpdate = async (balance: Balance) => {
   const updatedFile = JSON.stringify(data);
 
   return writeFile(updatedFile);
-}
+};

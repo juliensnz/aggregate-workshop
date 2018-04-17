@@ -7,7 +7,7 @@
     "test": "jest --config=jest.json",
     "build": "tsc -p tsconfig.json",
     "launch": "yarn build && node ./build/index.js",
-    "prettier": "prettier"
+    "prettier": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.ts\";"
   },
   "author": "",
   "license": "ISC",
