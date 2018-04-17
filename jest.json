@@ -1,0 +1,28 @@
+{
+  "transform": {
+    "^.+\\.ts$": "ts-jest"
+  },
+  "testPathIgnorePatterns": [
+    "node_modules"
+  ],
+  "projects": [
+    "<rootDir>/src"
+  ],
+  "testMatch": ["**/tests/**/*.test.ts"],
+  "moduleDirectories": [
+    "node_modules",
+    "src"
+  ],
+  "moduleFileExtensions": [
+    "ts",
+    "tsx",
+    "js",
+    "jsx",
+    "json",
+    "node"
+  ],
+  "collectCoverage": true,
+  "coverageReporters": [
+    "html"
+  ]
+}
