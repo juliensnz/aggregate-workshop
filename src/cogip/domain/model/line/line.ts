@@ -10,7 +10,7 @@ export class Quantity {
       throw new BadTypeError('You should pass a number value to create a quantity');
     }
 
-    if (quantity <= 0) {
+    if (quantity < 0) {
       throw new NegativeQuantityError('You should not have a negative quantity');
     }
   }

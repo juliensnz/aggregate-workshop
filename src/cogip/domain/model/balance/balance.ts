@@ -9,15 +9,15 @@ export interface BalanceEvent {
 
 export default class Balance {
   private constructor(readonly productId: ProductId, readonly balance: number = 0, readonly events: BalanceEvent[]) {
-    if (0 < balance) {
+    if (0 > balance) {
       throw new NegativeBalanceError('The balance cannot be negative');
     }
   }
 
-  public static create(productId: ProductId) {
+  public static create(productId: ProductId, balance: Quantity = Quantity.create(0)) {
     const events = [{type: 'BALANCE_CREATED', productId}];
 
-    return new Balance(productId, 0, events);
+    return new Balance(productId, balance.quantity, events);
   }
 
   public increase(balance: Quantity) {

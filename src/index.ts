@@ -1,8 +1,13 @@
 import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
-import {placePurchaseOrder, contactSupplier} from './cogip/application/command/purchase-order';
+import {placePurchaseOrder, contactSupplier, updatePurchaseOrders} from './cogip/application/command/purchase-order';
 import {receiveGoods} from './cogip/application/command/receipt-note';
-import {processReceivedGoods} from './cogip/application/command/balance';
+import {updateBalances} from './cogip/application/command/balance';
+
+const processReceivedGoods = (lines: any) => async (dispatch: any) => {
+  await dispatch(updateBalances(lines));
+  await dispatch(updatePurchaseOrders(lines));
+};
 
 const eventHandler = (state: any = {}, event: any) => {
   switch (event.type) {
@@ -18,7 +23,7 @@ const eventHandler = (state: any = {}, event: any) => {
 let store = createStore(eventHandler, applyMiddleware(thunk));
 
 const main = async () => {
-  store.dispatch(
+  await store.dispatch(
     placePurchaseOrder(
       [
         {
@@ -29,7 +34,7 @@ const main = async () => {
       'apple'
     )
   );
-  store.dispatch(
+  await store.dispatch(
     placePurchaseOrder(
       [
         {
@@ -40,9 +45,9 @@ const main = async () => {
       'samsung'
     )
   );
-  store.dispatch(contactSupplier('samsung'));
+  await store.dispatch(contactSupplier('samsung'));
 
-  store.dispatch(
+  await store.dispatch(
     receiveGoods(
       [
         {
@@ -53,6 +58,7 @@ const main = async () => {
       'samsung'
     )
   );
+  await store.dispatch(contactSupplier('apple'));
 };
 
 main();

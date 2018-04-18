@@ -17,12 +17,12 @@ export const receiveGoods = (rawLines: RawProductLine[], rawSupplier: string) =>
   const supplier = SupplierId.create(rawSupplier);
   const receiptId = ReceiptId.create(uuid());
 
-  const purchaseOrder = ReceiptNote.create(receiptId, lines, supplier);
+  const receiptNote = ReceiptNote.create(receiptId, lines, supplier);
 
-  await saveOrUpdateReceiptNote(purchaseOrder);
+  await saveOrUpdateReceiptNote(receiptNote);
 
-  dispatch({type: 'GOOD_RECEIVED', id: supplier.id});
-  purchaseOrder.events.forEach((event: ReceiptNoteEvent) => {
+  dispatch({type: 'GOOD_RECEIVED', id: supplier.id, lines: receiptNote.lines});
+  receiptNote.events.forEach((event: ReceiptNoteEvent) => {
     return dispatch(event);
   });
 };

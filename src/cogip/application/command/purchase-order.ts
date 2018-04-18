@@ -1,4 +1,4 @@
-import {saveOrUpdate as saveOrUpdatePurchaseOrder} from '../../infrastructure/repository/purchase-order';
+import {saveOrUpdate as saveOrUpdatePurchaseOrder, findAll} from '../../infrastructure/repository/purchase-order';
 import Line, {Quantity} from '../../domain/model/line/line';
 import ProductId from '../../domain/model/product/product-id';
 import PurchaseOrder, {PurchaseId, PurchaseOrderEvent} from '../../domain/model/purchase-order/purchase-order';
@@ -29,4 +29,26 @@ export const placePurchaseOrder = (rawLines: RawProductLine[], rawSupplier: stri
 
 export const contactSupplier = (id: string) => {
   return {type: 'SUPPLIER_CONTACTED', id};
+};
+
+export const updatePurchaseOrders = (lines: Line[]) => async (dispatch: any) => {
+  const rawPurchaseOrders = await findAll();
+  const purchaseOrders = rawPurchaseOrders.map((rawPurchase: any) => PurchaseOrder.createFromRaw(rawPurchase));
+
+  return Promise.all(
+    lines.map(async (line: Line) => {
+      const notCompletePurchaseOrder: PurchaseOrder | undefined = purchaseOrders.find(
+        (purchaseOrder: PurchaseOrder) => !purchaseOrder.isCompleteForProduct(line.product)
+      );
+
+      if (undefined !== notCompletePurchaseOrder) {
+        const completedPurchaseOrder = notCompletePurchaseOrder.receiveGoods(line);
+
+        await saveOrUpdatePurchaseOrder(completedPurchaseOrder);
+        completedPurchaseOrder.events.forEach((event: PurchaseOrderEvent) => {
+          return dispatch(event);
+        });
+      }
+    })
+  );
 };

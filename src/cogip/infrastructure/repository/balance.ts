@@ -2,7 +2,7 @@ import {readFile, get, writeFile} from './base';
 import Balance from '../../domain/model/balance/balance';
 
 export interface RawBalance {
-  productId: string;
+  productId: {id: string};
   balance: number;
 }
 

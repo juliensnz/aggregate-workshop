@@ -21,3 +21,25 @@ test('Can create a purchase order', () => {
   expect(placedOrder.events[1])
     .toEqual({ type: 'PURCHASE_PLACED', id: 'purchase' })
 });
+
+test('Can create a purchase order from raw', () => {
+  const order = PurchaseOrder.createFromRaw({
+    purchaseId: 'purchase_1',
+    lines: [],
+    supplier: {id: 'apple'}
+    received: [],
+
+  });
+
+  expect(order.events[0])
+    .toEqual({ type: 'PURCHASE_ORDER_CREATED', id: 'purchase' })
+  expect(order.placed)
+    .toEqual(false);
+
+  const placedOrder = order.place();
+
+  expect(placedOrder.placed)
+    .toEqual(true);
+  expect(placedOrder.events[1])
+    .toEqual({ type: 'PURCHASE_PLACED', id: 'purchase' })
+});
